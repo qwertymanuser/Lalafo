@@ -19,8 +19,13 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'first_name', 'last_name', 'email', 'phone_number', 'profile_image', 'password', 'password2')
     
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password2']:
+            raise serializers.ValidationError({'password':'Пароли отличаются'})
+        return attrs
+
     def create(self, validated_data):
-        if validated_data['password'] == validated_data['password2']:
+      #  if validated_data['password'] == validated_data['password2']:
             user = User.objects.create(
                 username = validated_data['username'],
                 first_name = validated_data['first_name'],
@@ -32,5 +37,5 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             user.set_password(validated_data['password2'])
             user.save()
             return user
-        else:
+      #  else:
             raise serializers.ValidationError("Пароли не совпадают!")
