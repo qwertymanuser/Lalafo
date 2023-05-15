@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.posts',
     'apps.users',
+    'apps.categories',
     'drf_yasg',
 ]
 
