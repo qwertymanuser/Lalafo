@@ -10,6 +10,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'email', 'date_joined', 'phone_number', 'profile_image', 'user_posts')
 
+class UserDetailSerializer(serializers.ModelSerializer):
+    user_posts = PostSerializer(many=True, read_only=True)
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'date_joined', 'phone_number', 'profile_image', 'user_posts')
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(
         max_length=100, write_only=True)
