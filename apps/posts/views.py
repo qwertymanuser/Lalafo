@@ -3,7 +3,7 @@ from rest_framework import mixins
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from apps.posts.models import Post, FavoritePost
-from apps.posts.serializer import PostSerializer, FavoritePostSerializer
+from apps.posts.serializer import PostSerializer, FavoritePostSerializer, PostDetailSerializer
 from apps.posts.permission import PostPermission
 
 # Create your views here.
@@ -21,6 +21,11 @@ class PostAPIViewSet(GenericViewSet, mixins.ListModelMixin, mixins.RetrieveModel
         if self.action in ('update', 'partial_update', 'destroy'):
             return (IsAuthenticated(), PostPermission())
         return (AllowAny(), )
+    
+    def get_serializer_class(self):
+        if self.action in ('retrieve', ):
+            return PostDetailSerializer
+        return PostSerializer
     
 class FavoritePostAPIViewSet(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.DestroyModelMixin):
     queryset = FavoritePost.objects.all()
